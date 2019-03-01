@@ -19,6 +19,7 @@ package jmx
 
 import (
 	"github.com/joeshaw/multierror"
+	"time"
 
 	"github.com/elastic/beats/libbeat/common"
 	"github.com/elastic/beats/libbeat/logp"
@@ -57,6 +58,7 @@ type MetricSet struct {
 	namespace string
 	http      JolokiaHTTPRequestFetcher
 	log       *logp.Logger
+	timeout   time.Duration
 }
 
 // New create a new instance of the MetricSet
@@ -65,6 +67,7 @@ func New(base mb.BaseMetricSet) (mb.MetricSet, error) {
 		Namespace  string       `config:"namespace" validate:"required"`
 		HTTPMethod string       `config:"http_method"`
 		Mappings   []JMXMapping `config:"jmx.mappings" validate:"required"`
+		TimeOut time.Duration	`config:"timeout"`
 	}{}
 
 	if err := base.Module().UnpackConfig(&config); err != nil {
@@ -81,6 +84,7 @@ func New(base mb.BaseMetricSet) (mb.MetricSet, error) {
 		namespace:     config.Namespace,
 		http:          jolokiaHTTPBuild,
 		log:           log,
+		timeout:	   config.TimeOut,
 	}, nil
 }
 

@@ -495,6 +495,7 @@ func (pc *JolokiaHTTPPostFetcher) Fetch(m *MetricSet) ([]common.MapStr, error) {
 
 	http.SetMethod(httpReqs[0].HTTPMethod)
 	http.SetBody(httpReqs[0].Body)
+	http.SetTimeOut(m.timeout)
 
 	resBody, err := http.FetchContent()
 	if err != nil {

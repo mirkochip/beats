@@ -133,6 +133,13 @@ func (h *HTTP) SetMethod(method string) {
 	h.method = method
 }
 
+// SetTimeOut sets a timeout for connections
+func (h *HTTP) SetTimeOut(timeout time.Duration) {
+	h.client = &http.Client{
+		Timeout: time.Second * timeout,
+	}
+}
+
 // GetURI gets the URI used in requests
 func (h *HTTP) GetURI() string {
 	return h.uri
